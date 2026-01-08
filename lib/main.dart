@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:furits_ecommerce_app/core/helper_function/on_generate_route.dart';
+import 'package:furits_ecommerce_app/core/services/sherd_preferences_singleton.dart';
 import 'package:furits_ecommerce_app/features/splash/views/splash_view/splash_view.dart';
 
-void main() {
+import 'generated/l10n.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Prefs.init();
   runApp(const FruitHub());
 }
 
@@ -12,6 +18,15 @@ class FruitHub extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: 'Cairo'),
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: const Locale('ar'),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: onGenerateRoute,
       initialRoute: SplashView.routeName,
