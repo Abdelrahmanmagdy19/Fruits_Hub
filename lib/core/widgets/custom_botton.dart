@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furits_ecommerce_app/core/utils/app_color.dart';
+import 'package:furits_ecommerce_app/core/utils/app_text_styels.dart';
 
 class CustomBotton extends StatelessWidget {
   const CustomBotton({super.key, this.onPressed, required this.text});
@@ -18,7 +19,10 @@ class CustomBotton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: Text(text, style: TextStyle(color: Colors.white)),
+        child: Text(
+          text,
+          style: AppTextStyles.bold16.copyWith(color: Colors.white),
+        ),
       ),
     );
   }
