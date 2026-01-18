@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:furits_ecommerce_app/core/helper_function/on_generate_route.dart';
+import 'package:furits_ecommerce_app/core/services/get_it_services.dart';
 import 'package:furits_ecommerce_app/core/services/sherd_preferences_singleton.dart';
 import 'package:furits_ecommerce_app/core/utils/app_color.dart';
 import 'package:furits_ecommerce_app/features/splash/views/splash_view/splash_view.dart';
@@ -14,6 +15,7 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Prefs.init();
+  setUpGetIt();
   runApp(const FruitHub());
 }
 
