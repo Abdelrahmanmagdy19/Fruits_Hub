@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:furits_ecommerce_app/core/errors/exception.dart';
 
@@ -11,11 +13,23 @@ class FirebaseAuthService {
           .createUserWithEmailAndPassword(email: email, password: password);
       return credential.user!;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'كلمة مرور ضعيفة') {
+      log(
+        'Exception in FirebaseAuthService.createUserWithEmailAndPassword: $e',
+      );
+      if (e.code == 'Weak-password') {
         throw CustomException(message: 'كلمة المرور المقدمة ضعيفة للغاية');
-      } else if (e.code == 'البريد الإلكتروني قيد الاستخدام بالفعل') {
+      } else if (e.code == 'email-already-in-use') {
         throw CustomException(
           message: 'الحساب موجود بالفعل لهذا البريد الإلكتروني.',
+        );
+      } else if (e.code == 'email-already-in-use') {
+        throw CustomException(
+          message: 'الحساب موجود بالفعل لهذا البريد الإلكتروني.',
+        );
+      } else if (e.code == 'network-request-failed') {
+        throw CustomException(
+          message:
+              'لا يوجد اتصال بالإنترنت. يرجى التحقق من اتصالك والمحاولة مرة أخرى.',
         );
       } else {
         throw CustomException(
@@ -23,6 +37,9 @@ class FirebaseAuthService {
         );
       }
     } catch (e) {
+      log(
+        'Exception in FirebaseAuthService.createUserWithEmailAndPassword: $e',
+      );
       throw CustomException(
         message: 'حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.',
       );

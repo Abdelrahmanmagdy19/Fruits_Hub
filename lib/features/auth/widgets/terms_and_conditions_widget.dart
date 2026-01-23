@@ -4,7 +4,8 @@ import 'package:furits_ecommerce_app/core/utils/app_text_styels.dart';
 import 'package:furits_ecommerce_app/features/auth/widgets/custom_check_box.dart';
 
 class TermsAndConditionsWidget extends StatefulWidget {
-  const TermsAndConditionsWidget({super.key});
+  const TermsAndConditionsWidget({super.key, required this.onChanged});
+  final ValueChanged<bool> onChanged;
 
   @override
   State<TermsAndConditionsWidget> createState() =>
@@ -22,6 +23,7 @@ class _TermsAndConditionsWidgetState extends State<TermsAndConditionsWidget> {
           isChecked: isChecked,
           onChanged: (value) {
             isChecked = value;
+            widget.onChanged(value);
             setState(() {});
           },
         ),

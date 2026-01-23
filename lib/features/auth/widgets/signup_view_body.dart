@@ -1,10 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:furits_ecommerce_app/core/helper_function/build_error_bar.dart';
 import 'package:furits_ecommerce_app/core/utils/app_color.dart';
 import 'package:furits_ecommerce_app/core/utils/app_text_styels.dart';
 import 'package:furits_ecommerce_app/core/widgets/custom_botton.dart';
 import 'package:furits_ecommerce_app/core/widgets/custom_text_from_field.dart';
+import 'package:furits_ecommerce_app/core/widgets/password_field.dart';
 import 'package:furits_ecommerce_app/features/auth/presentation/cubits/signup_cubit/signup_cubit.dart';
 import 'package:furits_ecommerce_app/features/auth/widgets/terms_and_conditions_widget.dart';
 
@@ -19,6 +21,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   late String email, name, password;
+  late bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,30 +49,33 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 16),
-              CustomTextFromField(
-                onSaved: (value) {
-                  password = value!;
-                },
-                suffixIcon: Icon(
-                  Icons.remove_red_eye,
-                  color: Color(0xffC9CECF),
-                ),
-                hintText: 'كلمة المرور',
-                keyboardType: TextInputType.visiblePassword,
-              ),
+              PasswordField(onSaved: (value) {}),
               SizedBox(height: 16),
-              TermsAndConditionsWidget(),
+              TermsAndConditionsWidget(
+                onChanged: (value) {
+                  isChecked = value;
+                },
+              ),
               SizedBox(height: 30),
               CustomBotton(
                 text: 'إنشاء حساب جديد',
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
-                    context.read<SignupCubit>().createUserWithEmailAndPassword(
-                      email,
-                      name,
-                      password,
-                    );
+                    if (isChecked) {
+                      context
+                          .read<SignupCubit>()
+                          .createUserWithEmailAndPassword(
+                            email,
+                            name,
+                            password,
+                          );
+                    } else {
+                      buildErrorBar(
+                        context,
+                        'يجب الموافقة على الشروط والأحكام',
+                      );
+                    }
                   } else {
                     autovalidateMode = AutovalidateMode.always;
                     setState(() {});
