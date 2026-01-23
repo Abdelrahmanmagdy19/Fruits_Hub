@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:furits_ecommerce_app/core/helper_function/build_error_bar.dart';
 import 'package:furits_ecommerce_app/features/auth/widgets/signup_view_body.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -13,9 +14,7 @@ class SignupViewBlocConsumer extends StatelessWidget {
     return BlocConsumer<SignupCubit, SignupState>(
       listener: (context, state) {
         if (state is SignupFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
-          );
+          buildErrorBar(context, state.message);
         } else if (state is SignupSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
