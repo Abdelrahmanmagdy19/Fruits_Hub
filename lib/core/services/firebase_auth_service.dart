@@ -22,10 +22,6 @@ class FirebaseAuthService {
         throw CustomException(
           message: 'الحساب موجود بالفعل لهذا البريد الإلكتروني.',
         );
-      } else if (e.code == 'email-already-in-use') {
-        throw CustomException(
-          message: 'الحساب موجود بالفعل لهذا البريد الإلكتروني.',
-        );
       } else if (e.code == 'network-request-failed') {
         throw CustomException(
           message:
@@ -40,6 +36,42 @@ class FirebaseAuthService {
       log(
         'Exception in FirebaseAuthService.createUserWithEmailAndPassword: $e',
       );
+      throw CustomException(
+        message: 'حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.',
+      );
+    }
+  }
+
+  Future<User> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return credential.user!;
+    } on FirebaseAuthException catch (e) {
+      log('Exception in FirebaseAuthService.signInWithEmailAndPassword: $e');
+      if (e.code == 'user-not-found') {
+        throw CustomException(
+          message: 'لا يوجد مستخدم مسجل بهذا البريد الإلكتروني.',
+        );
+      } else if (e.code == 'wrong-password') {
+        throw CustomException(message: 'كلمة المرور غير صحيحة.');
+      } else if (e.code == 'network-request-failed') {
+        throw CustomException(
+          message:
+              'لا يوجد اتصال بالإنترنت. يرجى التحقق من اتصالك والمحاولة مرة أخرى.',
+        );
+      } else {
+        throw CustomException(
+          message: 'حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.',
+        );
+      }
+    } catch (e) {
+      log('Exception in FirebaseAuthService.signInWithEmailAndPassword: $e');
       throw CustomException(
         message: 'حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.',
       );

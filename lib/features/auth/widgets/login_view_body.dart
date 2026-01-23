@@ -9,8 +9,8 @@ import 'package:furits_ecommerce_app/features/auth/widgets/dont_have_an_account_
 import 'package:furits_ecommerce_app/features/auth/widgets/or_divider.dart';
 import 'package:furits_ecommerce_app/features/auth/widgets/social_login_button.dart';
 
-class LoginViewBody extends StatelessWidget {
-  const LoginViewBody({super.key});
+class SigninViewBody extends StatelessWidget {
+  const SigninViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
