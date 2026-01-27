@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:furits_ecommerce_app/core/helper_function/build_error_bar.dart';
+import 'package:furits_ecommerce_app/core/utils/app_color.dart';
 import 'package:furits_ecommerce_app/features/auth/presentation/cubits/signin_cubit/signin_cubit.dart';
 import 'package:furits_ecommerce_app/features/auth/widgets/login_view_body.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -13,6 +14,12 @@ class SigninViewBodBlocConsumer extends StatelessWidget {
     return BlocConsumer<SigninCubit, SigninState>(
       listener: (context, state) {
         if (state is SigninSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('تم تسجيل الدخول بنجاح'),
+              backgroundColor: AppColor.primaryColor,
+            ),
+          );
         } else if (state is SigninFailure) {
           buildErrorBar(context, state.errorMessage);
         }

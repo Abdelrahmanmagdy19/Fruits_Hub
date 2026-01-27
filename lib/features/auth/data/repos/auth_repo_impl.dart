@@ -49,4 +49,26 @@ class AuthRepoImpl extends AuthRepo {
       return left(ServerFailure('حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.'));
     }
   }
+
+  @override
+  Future<Either<Failures, UserInties>> signInWithGoogle() async {
+    try {
+      var user = await firebaseAuthService.signInWithGoogle();
+      return right(UserModel.fromFirebaseUser(user));
+    } catch (e) {
+      log('Exception in AuthRepoImpl.signInWithGoogle: $e');
+      return left(ServerFailure('حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.'));
+    }
+  }
+
+  @override
+  Future<Either<Failures, UserInties>> signInWithFacebook() async {
+    try {
+      var user = await firebaseAuthService.signInWithFacebook();
+      return right(UserModel.fromFirebaseUser(user));
+    } catch (e) {
+      log('Exception in AuthRepoImpl.signInWithFacebook: $e');
+      return left(ServerFailure('حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.'));
+    }
+  }
 }
