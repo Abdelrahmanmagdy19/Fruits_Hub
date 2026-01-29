@@ -12,6 +12,7 @@ abstract class AuthRepo {
     String email,
     String password,
   );
+  Future addUserData({required UserInties user});
   Future<Either<Failures, UserInties>> signInWithGoogle();
   Future<Either<Failures, UserInties>> signInWithFacebook();
 }

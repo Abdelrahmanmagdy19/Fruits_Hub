@@ -49,7 +49,11 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                 keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 16),
-              PasswordField(onSaved: (value) {}),
+              PasswordField(
+                onSaved: (value) {
+                  password = value!;
+                },
+              ),
               SizedBox(height: 16),
               TermsAndConditionsWidget(
                 onChanged: (value) {
