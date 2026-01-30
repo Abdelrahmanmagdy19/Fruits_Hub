@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:furits_ecommerce_app/core/errors/exception.dart';
 import 'package:furits_ecommerce_app/core/errors/failures.dart';
 import 'package:furits_ecommerce_app/core/services/data_base_services.dart';
@@ -23,19 +24,28 @@ class AuthRepoImpl extends AuthRepo {
     String name,
     String password,
   ) async {
+    User? user;
     try {
-      var user = await firebaseAuthService.createUserWithEmailAndPassword(
+      user = await firebaseAuthService.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      var userInties = UserModel.fromFirebaseUser(user);
+      var userInties = UserInties(uId: user.uid, email: email, name: name);
       await addUserData(user: userInties);
       return right(userInties);
     } on CustomException catch (e) {
+      await deleteUser(user);
       return left(ServerFailure(e.message));
     } catch (e) {
+      await deleteUser(user);
       log('Exception in AuthRepoImpl.createUserWithEmailAndPassword: $e');
       return left(ServerFailure('حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.'));
+    }
+  }
+
+  Future<void> deleteUser(User? user) async {
+    if (user != null) {
+      await firebaseAuthService.deleteUser();
     }
   }
 
@@ -60,10 +70,14 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<Either<Failures, UserInties>> signInWithGoogle() async {
+    User? user;
     try {
-      var user = await firebaseAuthService.signInWithGoogle();
-      return right(UserModel.fromFirebaseUser(user));
+      user = await firebaseAuthService.signInWithGoogle();
+      var userInties = UserModel.fromFirebaseUser(user);
+      await addUserData(user: userInties);
+      return right(userInties);
     } catch (e) {
+      await deleteUser(user);
       log('Exception in AuthRepoImpl.signInWithGoogle: $e');
       return left(ServerFailure('حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.'));
     }
@@ -71,10 +85,14 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<Either<Failures, UserInties>> signInWithFacebook() async {
+    User? user;
     try {
-      var user = await firebaseAuthService.signInWithFacebook();
-      return right(UserModel.fromFirebaseUser(user));
+      user = await firebaseAuthService.signInWithFacebook();
+      var userInties = UserModel.fromFirebaseUser(user);
+      await addUserData(user: userInties);
+      return right(userInties);
     } catch (e) {
+      await deleteUser(user);
       log('Exception in AuthRepoImpl.signInWithFacebook: $e');
       return left(ServerFailure('حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.'));
     }
