@@ -10,4 +10,7 @@ class UserModel extends UserInties {
       name: user.displayName ?? '',
     );
   }
+  factory UserModel.fromJson(Map<String, dynamic> map) {
+    return UserModel(uId: map['uId'], email: map['email'], name: map['name']);
+  }
 }

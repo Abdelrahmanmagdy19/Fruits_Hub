@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:furits_ecommerce_app/core/errors/exception.dart';
 import 'package:furits_ecommerce_app/core/errors/failures.dart';
 import 'package:furits_ecommerce_app/core/services/data_base_services.dart';
@@ -59,7 +60,8 @@ class AuthRepoImpl extends AuthRepo {
         email: email,
         password: password,
       );
-      return right(UserModel.fromFirebaseUser(user));
+      var userInties = await getUserData(uId: user.uid);
+      return right(userInties);
     } on CustomException catch (e) {
       return left(ServerFailure(e.message));
     } catch (e) {
@@ -74,6 +76,12 @@ class AuthRepoImpl extends AuthRepo {
     try {
       user = await firebaseAuthService.signInWithGoogle();
       var userInties = UserModel.fromFirebaseUser(user);
+      if (await dataBaseServices.checkIfDocumentExists(
+        path: BackendPoint.checkIfExists,
+        documentId: user.uid,
+      )) {
+        return right(userInties);
+      }
       await addUserData(user: userInties);
       return right(userInties);
     } catch (e) {
@@ -100,6 +108,19 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<dynamic> addUserData({required UserInties user}) async {
-    await dataBaseServices.addUserData(BackendPoint.addUserData, user.toMap());
+    await dataBaseServices.addUserData(
+      BackendPoint.addUserData,
+      user.toMap(),
+      user.uId,
+    );
+  }
+
+  @override
+  Future<UserInties> getUserData({required String uId}) async {
+    var data = await dataBaseServices.getData(
+      path: BackendPoint.getUserData,
+      documentId: uId,
+    );
+    return UserModel.fromJson(data);
   }
 }

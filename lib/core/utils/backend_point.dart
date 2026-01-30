@@ -1,3 +1,5 @@
 class BackendPoint {
   static const String addUserData = 'users';
+  static const String getUserData = 'users';
+  static const String checkIfExists = 'users';
 }
