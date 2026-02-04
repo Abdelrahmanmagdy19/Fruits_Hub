@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:furits_ecommerce_app/core/errors/exception.dart';
 import 'package:furits_ecommerce_app/core/errors/failures.dart';
 import 'package:furits_ecommerce_app/core/services/data_base_services.dart';

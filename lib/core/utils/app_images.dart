@@ -26,6 +26,14 @@ class Assets {
   /// assets/images/logo.svg
   static const String imagesLogo = "assets/images/logo.svg";
 
+  /// Assets for imagesMaskGroup
+  /// assets/images/mask_group.png
+  static const String imagesMaskGroup = "assets/images/mask_group.png";
+
+  /// Assets for imagesNotification
+  /// assets/images/notification.svg
+  static const String imagesNotification = "assets/images/notification.svg";
+
   /// Assets for imagesPageViewItem1BackgroundImage
   /// assets/images/page_view_item_1_background_image.svg
   static const String imagesPageViewItem1BackgroundImage = "assets/images/page_view_item_1_background_image.svg";

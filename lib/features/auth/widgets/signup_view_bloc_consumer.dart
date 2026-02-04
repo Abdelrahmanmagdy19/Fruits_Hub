@@ -16,12 +16,7 @@ class SignupViewBlocConsumer extends StatelessWidget {
         if (state is SignupFailure) {
           buildErrorBar(context, state.message);
         } else if (state is SignupSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('تم إنشاء الحساب بنجاح'),
-              backgroundColor: Colors.green,
-            ),
-          );
+          Navigator.pop(context);
         }
       },
       builder: (context, state) {
