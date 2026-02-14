@@ -9,7 +9,7 @@ class BottomNavigationBarEntitey {
     required this.inActiveImage,
     required this.name,
   });
-  List<BottomNavigationBarEntitey> get bottomNavigationBarItem => [
+  static List<BottomNavigationBarEntitey> bottomNavigationBarItem = [
     BottomNavigationBarEntitey(
       isActiveImage: Assets.imagesHomeBold,
       inActiveImage: Assets.imagesHomeOutline,
