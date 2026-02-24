@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:furits_ecommerce_app/constants.dart';
 import 'package:furits_ecommerce_app/core/errors/exception.dart';
 import 'package:furits_ecommerce_app/core/errors/failures.dart';
 import 'package:furits_ecommerce_app/core/services/data_base_services.dart';
 import 'package:furits_ecommerce_app/core/services/firebase_auth_service.dart';
+import 'package:furits_ecommerce_app/core/services/sherd_preferences_singleton.dart';
 import 'package:furits_ecommerce_app/core/utils/backend_point.dart';
 import 'package:furits_ecommerce_app/features/auth/data/models/user_model.dart';
 import 'package:furits_ecommerce_app/features/auth/domain/entites/user_inties.dart';
@@ -58,7 +61,9 @@ class AuthRepoImpl extends AuthRepo {
         email: email,
         password: password,
       );
+
       var userInties = await getUserData(uId: user.uid);
+      await saveUserData(user: userInties);
       return right(userInties);
     } on CustomException catch (e) {
       return left(ServerFailure(e.message));
@@ -108,7 +113,7 @@ class AuthRepoImpl extends AuthRepo {
   Future<dynamic> addUserData({required UserInties user}) async {
     await dataBaseServices.addUserData(
       BackendPoint.addUserData,
-      user.toMap(),
+      UserModel.fromUserInties(user).toMap(),
       user.uId,
     );
   }
@@ -120,5 +125,11 @@ class AuthRepoImpl extends AuthRepo {
       documentId: uId,
     );
     return UserModel.fromJson(data);
+  }
+
+  @override
+  Future saveUserData({required UserInties user}) async {
+    var jsonData = jsonEncode(UserModel.fromUserInties(user).toMap());
+    await Prefs.setString(kUserData, jsonData);
   }
 }

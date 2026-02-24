@@ -13,4 +13,15 @@ class UserModel extends UserInties {
   factory UserModel.fromJson(Map<String, dynamic> map) {
     return UserModel(uId: map['uId'], email: map['email'], name: map['name']);
   }
+  factory UserModel.fromUserInties(UserInties userInties) {
+    return UserModel(
+      uId: userInties.uId,
+      email: userInties.email,
+      name: userInties.name,
+    );
+  }
+
+  toMap() {
+    return {'uId': uId, 'email': email, 'name': name};
+  }
 }
