@@ -6,6 +6,6 @@ class InActiveItem extends StatelessWidget {
   final String iconPath;
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: SvgPicture.asset(iconPath));
+    return SvgPicture.asset(iconPath);
   }
 }

@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:furits_ecommerce_app/core/utils/app_text_styels.dart';
 import 'package:furits_ecommerce_app/core/widgets/custom_notifcation.dart';
 
-AppBar buildAppBar({required String title, required BuildContext context}) {
+AppBar buildAppBar() {
   return AppBar(
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.transparent,
     centerTitle: true,
-    title: Text(title, style: AppTextStyles.bold19),
-    leading: GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Icon(Icons.arrow_back_ios),
-    ),
+    title: Text('الأكثر مبيعًا', style: AppTextStyles.bold19),
     actions: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

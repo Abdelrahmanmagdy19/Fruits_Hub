@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:furits_ecommerce_app/constants.dart';
+import 'package:furits_ecommerce_app/core/services/firebase_auth_service.dart';
 import 'package:furits_ecommerce_app/core/services/sherd_preferences_singleton.dart';
 import 'package:furits_ecommerce_app/core/utils/app_images.dart';
 import 'package:furits_ecommerce_app/features/auth/presentation/views/signin_view.dart';
+import 'package:furits_ecommerce_app/features/home/presentation/views/home_view.dart';
 import 'package:furits_ecommerce_app/features/on_boarding/views/on_boarding_view.dart';
 
 class SplashViewBody extends StatefulWidget {
@@ -42,7 +44,12 @@ class _SplashViewBodyState extends State<SplashViewBody> {
     Future.delayed(const Duration(seconds: 3), () {
       if (!mounted) return;
       if (isOnBoardingViewSeen) {
-        Navigator.pushReplacementNamed(context, SigninView.routeName);
+        var isLoggdIn = FirebaseAuthService().isUserLoggedIn();
+        if (isLoggdIn) {
+          Navigator.pushReplacementNamed(context, HomeView.routeName);
+        } else {
+          Navigator.pushReplacementNamed(context, SigninView.routeName);
+        }
       } else {
         Navigator.pushReplacementNamed(context, OnBoardingView.routeName);
       }
